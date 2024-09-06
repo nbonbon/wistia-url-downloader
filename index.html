@@ -27,12 +27,14 @@
       th {
         background-color: #f2f2f2;
       }
-      .copy-btn {
+      .copy-btn,
+      .download-btn {
         margin-left: 10px;
         cursor: pointer;
         color: #007bff;
       }
-      .copy-btn:hover {
+      .copy-btn:hover,
+      .download-btn:hover {
         text-decoration: underline;
       }
       .copied {
@@ -43,7 +45,7 @@
     </style>
   </head>
   <body>
-    <h1>Wistia Video Asset URL Extractor</h1>
+    <h1>Wistia Video Asset Extractor</h1>
     <label for="videoId">Video ID:</label>
     <input type="text" id="videoId" placeholder="Enter Wistia video ID" />
     <button onclick="getUrls()">Get URLs</button>
@@ -57,6 +59,7 @@
           <th>Height</th>
           <th>URL</th>
           <th>Copy URL</th>
+          <th>Download</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -113,6 +116,18 @@
             copyButton.className = "copy-btn";
             copyButton.onclick = () => copyToClipboard(copyButton, asset.url);
             copyButtonCell.appendChild(copyButton);
+          }
+
+          const downloadButtonCell = row.insertCell(6);
+          if (asset.url) {
+            const downloadButton = document.createElement("a");
+            downloadButton.target = "_blank";
+            downloadButton.setAttribute("download", asset.display_name || "download");
+            downloadButton.innerText = "Download";
+            downloadButton.className = "download-btn";
+            downloadButton.href = asset.url;
+            downloadButton.download = asset.display_name || "download";
+            downloadButtonCell.appendChild(downloadButton);
           }
         });
       }
