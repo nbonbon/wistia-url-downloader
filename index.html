@@ -104,6 +104,9 @@
           row.insertCell(2).innerText = asset.width || "N/A";
           row.insertCell(3).innerText = asset.height || "N/A";
 
+          let extension = asset.ext ? "." + asset.ext : ".mp4";
+          asset.url && (asset.url = asset.url.replace(".bin", extension));
+
           const urlCell = row.insertCell(4);
           const urlText = document.createElement("span");
           urlText.innerText = asset.url || "N/A";
@@ -125,8 +128,7 @@
             downloadButton.setAttribute("download", asset.display_name || "download");
             downloadButton.innerText = "Download";
             downloadButton.className = "download-btn";
-            let extension = asset.ext ? "." + asset.ext : ".mp4";
-            downloadButton.href = asset.url.replace(".bin", extension);
+            downloadButton.href = asset.url;
             downloadButton.download = asset.display_name || "download";
             downloadButtonCell.appendChild(downloadButton);
           }
