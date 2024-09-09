@@ -125,7 +125,8 @@
             downloadButton.setAttribute("download", asset.display_name || "download");
             downloadButton.innerText = "Download";
             downloadButton.className = "download-btn";
-            downloadButton.href = asset.url;
+            let extension = asset.ext ? "." + asset.ext : ".mp4";
+            downloadButton.href = asset.url.replace(".bin", extension);
             downloadButton.download = asset.display_name || "download";
             downloadButtonCell.appendChild(downloadButton);
           }
