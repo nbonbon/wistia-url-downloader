@@ -9,6 +9,16 @@ function Download() {
 function parseIds(wistiaUrls) {
     if (typeof wistiaUrls == 'string') {
         return parseId(wistiaUrls);
+    } else if(Array.isArray(wistiaUrls)) {
+        const result = [];
+        wistiaUrls.forEach((url) => {
+            if (typeof url == 'string') {
+                result.push(parseId(url));
+            } else {
+                result.push(undefined);
+            }
+        });
+        return result;
     } else {
         return undefined;
     }

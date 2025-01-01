@@ -16,6 +16,8 @@ test('parseIds should return undefined for string without expected pattern match
 });
 
 test('parseIds should parse ids from a list of URLs', () => {
+
+    console.log('parseIds should parse ids from a list of URLs');
     const testUrl = [
         'taco', 
         '<p><a href="https://url.com?wvideo=5kcpjz0dgc"><img src="https://embed-ssl.wistia.com/deliveries/123.jpg?image_play_button_size=2x&amp;image_crop_resized=960x317&amp;image_play_button=1&amp;image_play_button_color=434343e0" width="400" height="131.25" style="width: 400px; height: 131.25px;"></a></p><p><a href="https://url.com?wvideo=5kcpjz0dgc">taco.mov</a></p>', 
@@ -24,7 +26,7 @@ test('parseIds should parse ids from a list of URLs', () => {
 
     const result = parseIds(testUrl);
 
-    expect(result).toBe(result != null);
+    expect(result).toBeDefined();
 
     expect(result[0]).toBe(undefined);
     expect(result[1]).toBe('5kcpjz0dgc');
