@@ -1,9 +1,11 @@
 const WISTIA_VIDEO_ID_REGEX = /^.*wvideo=(.*)\".*$/
 
 function Download() {
-    parseIds()
-    getUrls()
-    downloadVideos()
+    const videoUrls = document.getElementById("videoId").value;
+    console.log("urls: " + videoUrls);
+    const videoIds = parseIds(videoUrls)
+    console.log("ids: " + videoIds);
+    downloadVideos(videoIds)
 }
 
 function parseIds(wistiaUrls) {
@@ -37,8 +39,8 @@ function parseId(url) {
     }
 }
 
-async function getUrls() {
-    const videoId = document.getElementById("videoId").value;
+async function downloadVideos(videoId) {
+    const selectedVideoQuality = document.getElementById("quality").value;
     if (!videoId) {
         alert("Please enter a video ID");
         return;
@@ -69,39 +71,42 @@ async function getUrls() {
     tableBody.innerHTML = ""; // Clear previous results
 
     assets.forEach((asset) => {
-        const row = tableBody.insertRow();
-        row.insertCell(0).innerText = asset.display_name || "N/A";
-        row.insertCell(1).innerText = formatSize(asset.size) || "N/A";
-        row.insertCell(2).innerText = asset.width || "N/A";
-        row.insertCell(3).innerText = asset.height || "N/A";
+        if (asset.display_name.toLowerCase().includes(selectedVideoQuality)) {
+            const row = tableBody.insertRow();
+            row.insertCell(0).innerText = asset.display_name || "N/A";
+            row.insertCell(1).innerText = formatSize(asset.size) || "N/A";
+            row.insertCell(2).innerText = asset.width || "N/A";
+            row.insertCell(3).innerText = asset.height || "N/A";
 
-        let extension = asset.ext ? "." + asset.ext : ".mp4";
-        asset.url && (asset.url = asset.url.replace(".bin", extension));
+            let extension = asset.ext ? "." + asset.ext : ".mp4";
+            asset.url && (asset.url = asset.url.replace(".bin", extension));
 
-        const urlCell = row.insertCell(4);
-        const urlText = document.createElement("span");
-        urlText.innerText = asset.url || "N/A";
-        urlCell.appendChild(urlText);
+            const urlCell = row.insertCell(4);
+            const urlText = document.createElement("span");
+            urlText.innerText = asset.url || "N/A";
+            urlCell.appendChild(urlText);
 
-        const copyButtonCell = row.insertCell(5);
-        if (asset.url) {
-            const copyButton = document.createElement("button");
-            copyButton.innerText = "Copy URL";
-            copyButton.className = "copy-btn";
-            copyButton.onclick = () => copyToClipboard(copyButton, asset.url);
-            copyButtonCell.appendChild(copyButton);
-        }
+            const copyButtonCell = row.insertCell(5);
+            if (asset.url) {
+                const copyButton = document.createElement("button");
+                copyButton.innerText = "Copy URL";
+                copyButton.className = "copy-btn";
+                copyButton.onclick = () => copyToClipboard(copyButton, asset.url);
+                copyButtonCell.appendChild(copyButton);
+            }
 
-        const downloadButtonCell = row.insertCell(6);
-        if (asset.url) {
-            const downloadButton = document.createElement("a");
-            downloadButton.target = "_blank";
-            downloadButton.setAttribute("download", asset.display_name || "download");
-            downloadButton.innerText = "Download";
-            downloadButton.className = "download-btn";
-            downloadButton.href = asset.url;
-            downloadButton.download = asset.display_name || "download";
-            downloadButtonCell.appendChild(downloadButton);
+            const downloadButtonCell = row.insertCell(6);
+            if (asset.url) {
+                const downloadButton = document.createElement("a");
+                downloadButton.target = "_blank";
+                downloadButton.setAttribute("download", asset.display_name || "download");
+                downloadButton.innerText = "Download";
+                downloadButton.className = "download-btn";
+                downloadButton.href = asset.url;
+                downloadButton.download = asset.display_name || "download";
+                downloadButtonCell.appendChild(downloadButton);
+                downloadButton.click();
+            }
         }
     });
 }
@@ -133,4 +138,7 @@ function copyToClipboard(button, text) {
     );
 }
 
-module.exports = parseIds;
+// Conditionally export for Node.js environment
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') { 
+    module.exports = parseIds; 
+}
