@@ -1,9 +1,10 @@
 const WISTIA_VIDEO_ID_REGEX = /^.*wvideo=(.*)\".*$/
 
 function Download() {
-    const videoUrls = document.getElementById("videoId").value;
-    console.log("urls: " + videoUrls);
-    const videoIds = parseIds(videoUrls)
+    const idFormat = document.getElementById("id_format").value;
+    const ids = document.getElementById("id").value;
+    console.log("raw ids: " + ids);
+    const videoIds = parseIds(ids)
     console.log("ids: " + videoIds);
     downloadVideos(videoIds)
 }

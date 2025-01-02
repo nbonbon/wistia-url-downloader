@@ -46,8 +46,15 @@
   </head>
   <body>
     <h1>Wistia Video Asset Downloader</h1>
-    <label for="videoId">Video ID:</label>
-    <input type="text" id="videoId" placeholder="Enter Wistia video ID" />
+    <label for="ids">Video ID's:</label>
+    <input type="text" id="ids" placeholder="Enter Wistia video ID's" />
+
+    <label for="id_format">ID Format:</label>
+    <select id="id_format" name="id_format">
+      <option value="comma_separated_ids">Comma Separated ID's</option>
+      <option value="links">Links</option>
+    </select>
+
     <label for="quality">Quality:</label>
     <select id="quality" name="quality">
       <option value="original">Original</option>
